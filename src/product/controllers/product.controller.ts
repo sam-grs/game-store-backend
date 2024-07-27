@@ -55,13 +55,7 @@ export class ProductController {
 
   @Get('/preco/:preco')
   @HttpCode(HttpStatus.OK)
-  findHigherPrice(@Param('preco') price: number): Promise<ProductEntity[]> {
+  findPrice(@Param('preco') price: number): Promise<ProductEntity[]> {
     return this.productService.findHigherPrice(price);
-  }
-
-  @Get('/preco/:preco')
-  @HttpCode(HttpStatus.OK)
-  findLowerPrice(@Param('preco') price: number): Promise<ProductEntity[]> {
-    return this.productService.findLowerPrice(price);
   }
 }

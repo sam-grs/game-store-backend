@@ -78,45 +78,28 @@ export class ProductService {
     return await this.productRepository.delete(id);
   }
 
-  async findHigherPrice(price: number): Promise<ProductEntity[]> {
+  async findPrice(price: number): Promise<ProductEntity[]> {
     if (price == 0) {
       throw new HttpException(
         'Preço deve ser maior que zero!',
         HttpStatus.BAD_REQUEST,
       );
     }
-
-    const getProduct = (func) =>
-      this.productRepository.find({
-        where: { price: func(price) },
+    if (price > 500) {
+      return await this.productRepository.find({
+        where: { price: MoreThanOrEqual(price) },
         relations: {
           category: true,
         },
       });
-
-    if (price > 500) {
-      return await getProduct(MoreThanOrEqual);
     } else {
-      return await getProduct(LessThanOrEqual);
+      return await this.productRepository.find({
+        where: { price: LessThanOrEqual(price) },
+        relations: {
+          category: true,
+        },
+        order: { price: 'ASC' },
+      });
     }
-  }
-
-  async findLowerPrice(price: number): Promise<ProductEntity[]> {
-    if (price > 500)
-      throw new HttpException(
-        'O preço deve ser menor ou igual a 500',
-        HttpStatus.NOT_FOUND,
-      );
-
-    const product = await this.productRepository.find({
-      where: { price: LessThanOrEqual(price) },
-      relations: {
-        category: true,
-      },
-      order: {
-        price: 'ASC',
-      },
-    });
-    return product;
   }
 }
