@@ -79,7 +79,7 @@ export class ProductService {
   }
 
   async findPrice(price: number): Promise<ProductEntity[]> {
-    if (price == 0) {
+    if (price <= 0) {
       throw new HttpException(
         'Preço deve ser maior que zero!',
         HttpStatus.BAD_REQUEST,
@@ -91,6 +91,7 @@ export class ProductService {
         relations: {
           category: true,
         },
+        order: { price: 'ASC' },
       });
     } else {
       return await this.productRepository.find({
@@ -98,7 +99,7 @@ export class ProductService {
         relations: {
           category: true,
         },
-        order: { price: 'ASC' },
+        order: { price: 'DESC' },
       });
     }
   }
