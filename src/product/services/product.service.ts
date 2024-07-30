@@ -85,7 +85,7 @@ export class ProductService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (price > 500) {
+    if (price >= 500) {
       return await this.productRepository.find({
         where: { price: MoreThanOrEqual(price) },
         relations: {
@@ -93,14 +93,13 @@ export class ProductService {
         },
         order: { price: 'ASC' },
       });
-    } else {
-      return await this.productRepository.find({
-        where: { price: LessThanOrEqual(price) },
-        relations: {
-          category: true,
-        },
-        order: { price: 'DESC' },
-      });
     }
+    return await this.productRepository.find({
+      where: { price: LessThanOrEqual(price) },
+      relations: {
+        category: true,
+      },
+      order: { price: 'DESC' },
+    });
   }
 }

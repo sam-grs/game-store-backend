@@ -56,6 +56,6 @@ export class ProductController {
   @Get('/preco/:preco')
   @HttpCode(HttpStatus.OK)
   findPrice(@Param('preco') price: number): Promise<ProductEntity[]> {
-    return this.productService.findHigherPrice(price);
+    return this.productService.findPrice(price);
   }
 }
