@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { CategoryEntity } from '../../category/entities/category.entity';
+import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity({ name: 'tb_products' })
 export class ProductEntity {
@@ -36,4 +37,9 @@ export class ProductEntity {
     onDelete: 'CASCADE',
   })
   category: CategoryEntity;
+
+  @ManyToOne(() => UserEntity, (user) => user.post, {
+    onDelete: 'CASCADE',
+  })
+  user: UserEntity;
 }
